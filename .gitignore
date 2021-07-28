@@ -1,0 +1,5 @@
+#virtualenv
+/anomaly-detection-cli
+/anomaly_detection.egg-info
+/build
+/dist
