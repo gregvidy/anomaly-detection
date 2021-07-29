@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import os
 import pickle
-import typer
 
 from sklearn.metrics import roc_auc_score, precision_score, recall_score, f1_score
 from .helper.anomaly_injection import inject_artifical_anomaly
@@ -11,7 +10,6 @@ from .helper.sample_split import train_test_split
 from .helper.models import LINEAR_MODEL, ENSEMBLE_MODEL, CALIBRATED_CLF
 from .helper.enum_param import ModelStrategy
 
-app = typer.Typer()
 
 
 def train_model(
@@ -79,7 +77,6 @@ def train_model(
     return clf_model
 
 
-@app.command()
 def run_model_pipeline(
     filename: str = typer.Option(...),
     model_type: ModelStrategy = ModelStrategy.LOGREGCV,
