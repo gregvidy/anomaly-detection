@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 import pickle
+import typer
 
 from sklearn.metrics import roc_auc_score, precision_score, recall_score, f1_score
 from .helper.anomaly_injection import inject_artifical_anomaly
@@ -10,10 +11,10 @@ from .helper.sample_split import train_test_split
 from .helper.models import LINEAR_MODEL, ENSEMBLE_MODEL, CALIBRATED_CLF
 from .helper.enum_param import ModelStrategy
 
-
+app = typer.Typer()
 
 def train_model(
-    df: pd.DataFrame,
+    df: pd.DataFrame = typer.Option(...),
     anomaly_frac_size: int = 7,
     anomaly_size_per_frac: int = 50,
     model_type: ModelStrategy = ModelStrategy.LOGREGCV,
@@ -77,11 +78,13 @@ def train_model(
     return clf_model
 
 
+@app.command()
 def run_model_pipeline(
     filename: str = typer.Option(...),
     model_type: ModelStrategy = ModelStrategy.LOGREGCV,
+    version: str = typer.Option(...),
     anomaly_frac_size: int = 7,
-    anomaly_size_per_frac: int = 50,
+    anomaly_size_per_frac: int = 50
 ):
 
     # ingest/import data
@@ -99,7 +102,7 @@ def run_model_pipeline(
     # set model destination
     print("Start dump the model ...")
     model_destination = os.path.join("trained_models")
-    model_path = model_type + "_model_v1.pkl"
+    model_path = model_type + f"_model_v{version}.pkl"
     model_destination = os.path.join(model_destination, model_path)
     print("Finish dump the model!")
 

@@ -1,11 +1,14 @@
 import pandas as pd
 import numpy as np
+import typer
 import joblib
 import os
 import datetime
 
 from .helper.enum_param import ModelStrategy
 from .helper.feature_engineering import run_all_features, get_deviation_from_median
+
+app = typer.Typer()
 
 
 def predict_data(df: pd.DataFrame, model_type: ModelStrategy = ModelStrategy.LOGREGCV):
@@ -52,6 +55,7 @@ def predict_data(df: pd.DataFrame, model_type: ModelStrategy = ModelStrategy.LOG
     return df_result
 
 
+@app.command()
 def run_predict_pipeline(
     filename: str = typer.Option(...),
     model_type: ModelStrategy = ModelStrategy.LOGREGCV,
